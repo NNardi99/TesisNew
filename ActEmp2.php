@@ -4,24 +4,24 @@ $l=$_SESSION['LEGAJO'];
 require("Conexion.php");
 $idCone=Conectar();
 $sql="select * from empleados where legajo='$l'";
-$sql2="select * from empleados";
 $registro=mysql_query($sql,$idCone);
-$registro2=mysql_query($sql2,$idCone);
-$registrocount=mysql_query($sql2,$idCone);
 $fila=mysql_fetch_array($registro);
-
-$count=1;
-
-while ($filacount=mysql_fetch_array($registrocount))
-{
-    $count = $count + 1;
-}
-
-
 $n=$fila['nombre'];
 
-
+$l2=$_REQUEST['legajo2'];
+$sql2="select * from empleados where legajo='$l2'";
+$registro2=mysql_query($sql2,$idCone);
+$fila2=mysql_fetch_array($registro2);
+$a=$fila2['apellido'];
+$n2=$fila2['nombre'];
+$c=$fila2['cuil'];
+$t=$fila2['telefono'];
+$d=$fila2['domicilio'];
+$lo=$fila2['codloc'];
+$cp=$fila2['codprov'];
+$e=$fila2['email'];
 ?>
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -91,35 +91,35 @@ $n=$fila['nombre'];
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Registro de Empleado</h2>
-                        <form action="AltaEmp.php" method="post" onSubmit="if (!confirm('¿Desea dar de alta?')){return false;}">
+                        <form action="ActEmp3.php?legajo2=<?php echo"$l2"?>" method="post" onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}">
                         <table class="table table-user-information ">
                             <tbody>
                                 <tr>
                                     <td>
                                         <h4>Legajo</h4>
-                                        <?php echo"$count" ?>
+                                        <?php echo"$l2" ?>
                                     </td>
                                     <td>
                                         <h4>Apellido</h4>
-                                        <input type="text" name="apellido" required>
+                                        <input type="text" name="apellido" value="<?php echo"$a" ?>" required>
                                     </td>
                                     <td>
                                         <h4>Nombre</h4>
-                                        <input type="text" name="nombre" required>
+                                        <input type="text" name="nombre" value="<?php echo"$n2" ?>" required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <h4>C.U.I.L.</h4>
-                                        <input type="text" placeholder="20111111115" pattern="[0-9]{11}" minlength="11" maxlength="11" name="cuil" required>
+                                        <input type="text" placeholder="20111111115" pattern="[0-9]{11}" minlength="11" maxlength="11" name="cuil" value="<?php echo"$c" ?>" required>
                                     </td>
                                     <td>
                                         <h4>Tel&eacute;fono</h4>
-                                        <input type="tel" placeholder="12312345678" minlength="10" maxlength="10" name="telefono" required>
+                                        <input type="tel" placeholder="12312345678" minlength="10" maxlength="10" name="telefono" value="<?php echo"$t" ?>" required>
                                     </td>
                                     <td>
                                         <h4>Domicilio</h4>
-                                        <input type="text" name="domicilio" required>
+                                        <input type="text" name="domicilio" value="<?php echo"$d" ?>" required>
                                     </td>
                                 </tr>
                                 <tr>
@@ -132,7 +132,7 @@ $n=$fila['nombre'];
                                             while($fila5=mysql_fetch_array($registro5)){
                                                 $Cod=$fila5['codigo'];
                                                 $Npro=$fila5['provincia'];
-                                                echo"<option value=$Cod>$Npro</option>";
+                                                echo"<option value=$Cod";if($cp==$Cod){echo" selected";}echo">$Npro</option>";
                                             }
                                             echo"</select>";
                                         ?>
@@ -140,125 +140,38 @@ $n=$fila['nombre'];
                                     <td>
                                         <h4>Localidad</h4>
                                         <?php
-                                            $sql6="select * from localidad where codprov='1'";
+                                            $sql6="select * from localidad where codprov='$cp'";
                                             $registro6=mysql_query($sql6,$idCone) or die("Error en el select");
                                             echo"<select name='s2' id='localidades'>";
                                             while($fila6=mysql_fetch_array($registro6)){
                                                 $Cd=$fila6['codlocalidad'];
                                                 $Nloc=$fila6['localidad'];
-                                                echo"<option value=$Cd>$Nloc</option>";
+                                                echo"<option value=$Cd";if($lo==$Cd){echo" selected";}echo">$Nloc</option>";
                                             }
                                             echo"</select>";
                                         ?>
                                     </td>
                                     <td>
                                         <h4>Email</h4>
-                                        <input type="text" name="email" placeholder="me@example.com.ar" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required/>
+                                        <input type="text" name="email" placeholder="me@example.com.ar" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="<?php echo"$e" ?>" required/>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <button 
-                            class="btn btn-primary ml-2" type="submit">Dar de Alta</button>
+                            class="btn btn-primary ml-2" type="submit">Guardar cambios</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xl-12">
-                <table class="table table-bordered table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                        <th scope="col">Legajo</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">C.U.I.L.</th>
-                        <th scope="col">Tel&eacute;fono</th>
-                        <th scope="col">Domicilio</th>
-                        <th scope="col">Provincia</th>
-                        <th scope="col">Localidad</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Modificar</th>
-                        <th scope="col">Baja</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            while ($fila2=mysql_fetch_array($registro2))
-                            {
-                                echo"<tr class='table-secondary'>";
-                                $l2=$fila2['legajo'];
-                                $a=$fila2['apellido'];
-                                $n=$fila2['nombre'];
-                                $c=$fila2['cuil'];
-                                $t=$fila2['telefono'];
-                                $d=$fila2['domicilio'];
-                                $p=$fila2['codprov'];
-                                $loc=$fila2['codloc'];
-                                $es=$fila2['estado'];
-                                $em=$fila2['email'];
-                                
-                                $sql3="select * from provincias where codigo='$p'";
-                                $registro3=mysql_query($sql3,$idCone);
-                                $fila3=mysql_fetch_array($registro3);
-                                $pr=$fila3['provincia'];
-
-                                $sql4="select * from localidad where codlocalidad='$loc'";
-                                $registro4=mysql_query($sql4,$idCone);
-                                $fila4=mysql_fetch_array($registro4);
-                                $loc2=$fila4['localidad'];
-
-                                echo"<td>".$l2;
-                                echo"<td>".$a;
-                                echo"<td>".$n;
-                                echo"</div>";
-                                echo"<td>".$c;
-                                echo"<td>".$t;
-                                echo"<td>".$d;
-                                echo"</div>";
-                                echo"<td>".$pr;
-                                echo"<td>".$loc2;
-                                echo"<td>".$em;
-                                echo"<td>".$es;
-                                echo"<td><a
-                                    class='btn btn-primary ml-2'
-                                    href='ActEmp2.php?legajo2=$l2'
-                                    >
-                                    Modificar
-                                    </a>";
-                                echo"<td><a href=javascript:borrar('$l2')>";
-                                    if ($es=='activo'){
-                                        echo"<img class='img-fluid' style='width: 50px;' src='./img/activo.png'></a>";
-                                    }
-                                    else {
-                                        echo"<img class='img-fluid' style='width: 50px;' src='./img/inactivo.png'></a>";
-                                    }
-
-                                echo"</tr>";
-                            }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </div>
 
-    
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script languaje="javascript">
-function borrar(dato){
-direccion="BajaEmpleado.php?legajo="+dato;
-
-if(confirm("Confirma el cambio de estado de "+dato)){
-location=direccion;
-}
-else alert("Baja Cancelada");
-}
 
 $('#provincias').change(function(){
         valor=$(this).val();
@@ -270,3 +183,4 @@ $('#provincias').change(function(){
 
 </body>
 </html>
+
