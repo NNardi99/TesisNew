@@ -89,160 +89,160 @@ $cargo=$fila3['nombre'];
                         </ul>
                     </div>
                 </div>
-            <div class="col-xl-3"></div>
-        </div>
-        <div class="row">
-            <div class="col-xl-6 offset-md-0">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title"><?php echo$n ?></h2>
-                        <form 
-                            action="ActEmp.php?legajo=<?php echo$l ?>"
-                            method="post"
-                            onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}"
-                            >
-                        <table class="table table-user-information ">
-                            <tbody>
-                                <tr>
-                                    <td> Apellido:</td>
-                                    <td><?php echo$a ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Cargo:</td>
-                                    <td><?php echo$cargo ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Cuil:</td>
-                                    <td><?php echo $c ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Tel&eacute;fono:</td>
-                                    <td><input
-                                            type="tel"
-                                            name="telefono"
-                                            placeholder="12312345678"
-                                            minlength="10"
-                                            maxLength="10"
-                                            value="<?php echo $t ?>"
-                                            required
-                                        /><span> *</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Domicilio</td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            name="domicilio"
-                                            value="<?php echo $d ?>"
-                                            required
-                                        /><span> *</span>
-                                    </td>
-                                </tr>
-                                    <td>Provincia</td>
-                                    <td>
-                                        <select name="s1" id="provincias">
-                                        <?php
-                                            $sql4="select * from provincias";
-                                            $registro4=mysql_query($sql4,$idCone);
-
-                                            while($fila4=mysql_fetch_array($registro4)){
-                                                $Cpr=$fila4['codigo'];
-                                                $N=$fila4['provincia'];
-                                                echo"<option value=$Cpr ";if($cp==$Cpr){echo"selected";}echo">$N</option>";
-                                            }
-                                        ?>
-                                        </select><span> *</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Localidad:</td>
-                                    <td>
-                                        <select name="s2" id="localidades">
+                <div class="col-xl-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 offset-md-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title"><?php echo$n ?></h2>
+                            <form 
+                                action="ActEmp.php?legajo=<?php echo$l ?>"
+                                method="post"
+                                onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}"
+                                >
+                            <table class="table table-user-information ">
+                                <tbody>
+                                    <tr>
+                                        <td> Apellido:</td>
+                                        <td><?php echo$a ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cargo:</td>
+                                        <td><?php echo$cargo ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cuil:</td>
+                                        <td><?php echo $c ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tel&eacute;fono:</td>
+                                        <td><input
+                                                type="tel"
+                                                name="telefono"
+                                                placeholder="12312345678"
+                                                minlength="10"
+                                                maxLength="10"
+                                                value="<?php echo $t ?>"
+                                                required
+                                            /><span> *</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Domicilio</td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                name="domicilio"
+                                                value="<?php echo $d ?>"
+                                                required
+                                            /><span> *</span>
+                                        </td>
+                                    </tr>
+                                        <td>Provincia</td>
+                                        <td>
+                                            <select name="s1" id="provincias">
                                             <?php
-                                                $sql5="select * from localidad where codprov='$cp'";
-                                                $registro5=mysql_query($sql5,$idCone);
+                                                $sql4="select * from provincias";
+                                                $registro4=mysql_query($sql4,$idCone);
 
-                                                while($fila5=mysql_fetch_array($registro5)){
-                                                    $Cloc=$fila5['codlocalidad'];
-                                                    $Nl=$fila5['localidad'];
-                                                    echo"<option value=$Cloc ";if($loc==$Cloc){echo"selected";}echo">$Nl</option>";
+                                                while($fila4=mysql_fetch_array($registro4)){
+                                                    $Cpr=$fila4['codigo'];
+                                                    $N=$fila4['provincia'];
+                                                    echo"<option value=$Cpr ";if($cp==$Cpr){echo"selected";}echo">$N</option>";
                                                 }
                                             ?>
-                                        </select><span> *</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Email:</td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            name="email"
-                                            placeholder="me@example.com.ar"
-                                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                                            value="<?php echo $e ?>"
-                                            required
-                                        /><span> *</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                            </tbody>
-                        </table>
-                        <button 
-                            class="btn btn-primary ml-2" type="submit">Guardar cambios</button>
-                        </form>
+                                            </select><span> *</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Localidad:</td>
+                                        <td>
+                                            <select name="s2" id="localidades">
+                                                <?php
+                                                    $sql5="select * from localidad where codprov='$cp'";
+                                                    $registro5=mysql_query($sql5,$idCone);
+
+                                                    while($fila5=mysql_fetch_array($registro5)){
+                                                        $Cloc=$fila5['codlocalidad'];
+                                                        $Nl=$fila5['localidad'];
+                                                        echo"<option value=$Cloc ";if($loc==$Cloc){echo"selected";}echo">$Nl</option>";
+                                                    }
+                                                ?>
+                                            </select><span> *</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                name="email"
+                                                placeholder="me@example.com.ar"
+                                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                                                value="<?php echo $e ?>"
+                                                required
+                                            /><span> *</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                </tbody>
+                            </table>
+                            <button 
+                                class="btn btn-primary ml-2" type="submit">Guardar cambios</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-6 offset-md-0">
-                <div class="card">
-                    <div class="card-body">
-                        <form 
-                            action="ActUs.php?legajo=<?php echo$l ?>"
-                            method="post"
-                            onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}"
-                        >
-                        <h3 class="card-title">Cambia tu clave</h3>
-                        <table class="table table-user-information ">
-                            <tbody>
-                                <tr>
-                                    <td>Usuario actual:</td>
-                                    <td>
-                                        <?php echo $u ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Usuario nuevo:</td>
-                                    <td>
-                                        <input
-                                        name="newUsuario"
-                                        type="text"
-                                        value=""
-                                        required
-                                        /><span> *</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Clave nueva:</td>
-                                    <td>
-                                        <Input
-                                        name="newPassword"
-                                        type="password"
-                                        value=""
-                                        required
-                                        /><span> *</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button class="btn btn-primary ml-2" type="submit">Guardar cambios</button>
-                        </form>
+                <div class="col-xl-6 offset-md-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <form 
+                                action="ActUs.php?legajo=<?php echo$l ?>"
+                                method="post"
+                                onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}"
+                            >
+                            <h3 class="card-title">Cambia tu clave</h3>
+                            <table class="table table-user-information ">
+                                <tbody>
+                                    <tr>
+                                        <td>Usuario actual:</td>
+                                        <td>
+                                            <?php echo $u ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Usuario nuevo:</td>
+                                        <td>
+                                            <input
+                                            name="newUsuario"
+                                            type="text"
+                                            value=""
+                                            required
+                                            /><span> *</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Clave nueva:</td>
+                                        <td>
+                                            <Input
+                                            name="newPassword"
+                                            type="password"
+                                            value=""
+                                            required
+                                            /><span> *</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-primary ml-2" type="submit">Guardar cambios</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     
 <script src="js/jquery-3.3.1.min.js"></script>
