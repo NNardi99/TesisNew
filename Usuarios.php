@@ -45,38 +45,142 @@ $n=$fila['nombre'];
         </div>
         <div class="row">
             <div class="col-xl-3"></div>
-                <div class="col-xl-6">
-                    <div class="container">
-                        <ul class="dashboard-tabs">
-                            <li>
-                                <a href="Admin.php" class="btn ">
-                                    Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <a href="Empleados.php" class="btn">
-                                    Empleados
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="Usuarios.php" class="btn">
-                                    Usuarios
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="btn">
-                                    Reportes
-                                </a>
-                            </li>
-                        </ul>
+            <div class="col-xl-6">
+                <div class="container">
+                    <ul class="dashboard-tabs">
+                        <li>
+                            <a href="Admin.php" class="btn ">
+                                Perfil
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Empleados.php" class="btn">
+                                Empleados
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="Usuarios.php" class="btn">
+                                Usuarios
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn">
+                                Reportes
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xl-3"></div>
+        </div>
+
+        <div class="row" style="margin-bottom: 10px">
+            <div class="col-xl-2 offset-md-0"></div>
+            <div class="col-xl-8 offset-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Registro de Usuario</h2>
+                        <form action="AltaUs.php" method="post" onSubmit="if (!confirm('¿Desea crear el usuario?')){return false;}">
+                            <table class="table table-user-information ">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <h4>Legajo</h4>
+                                            <?php
+                                                $sql2="select * from empleados where legajo not in (select legajo from usuarios)";
+                                                $registro2=mysql_query($sql2,$idCone) or die("Error en el select");
+                                                echo"<select name='s1'>";
+                                                while($fila2=mysql_fetch_array($registro2)){
+                                                    $legajo=$fila2['legajo'];
+                                                    $nomcomp=$fila2['nombre'];
+                                                    $nomcomp .=" ";
+                                                    $nomcomp .=$fila2['apellido'];
+                                                    echo"<option value=$legajo>$nomcomp</option>";
+                                                }
+                                                echo"</select>";
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <h4>Tipo</h4>
+                                            <?php
+                                                $sql3="select * from tipousuario";
+                                                $registro3=mysql_query($sql3,$idCone) or die("Error en el select");
+                                                echo"<select name='s2'>";
+                                                while($fila3=mysql_fetch_array($registro3)){
+                                                    $cod=$fila3['codigo'];
+                                                    $tipo=$fila3['nombre'];
+                                                    echo"<option value=$cod>$tipo</option>";
+                                                }
+                                                echo"</select>";
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h4>Usuario</h4>
+                                            <input type="text" name="usuario" required>
+                                        </td>
+                                        <td>
+                                            <h4>Clave</h4>
+                                            <input type="text" name="clave" required>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-primary ml-2" type="submit">Crear Usuario</button>
+                        </form>
                     </div>
                 </div>
-                <div class="col-xl-3"></div>
             </div>
+            <div class="col-xl-2 offset-md-0"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">Legajo</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Clave</th>
+                        <th scope="col">Tipo de Usuario</th>
+                        <th scope="col">Actualizar Datos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $sql3="select * from usuarios";
+                            $registro3=mysql_query($sql3,$idCone);
+                            while ($fila3=mysql_fetch_array($registro3))
+                            {
+                                echo"<tr class='table-secondary'>";
+                                $leg=$fila3['legajo'];
+                                $us=$fila3['usuario'];
+                                $clav=$fila3['clave'];
+                                $tip=$fila3['tipo'];
 
-        <div>
-    </div>
+                                $sql4="select * from tipousuario where codigo='$tip'";
+                                $registro4=mysql_query($sql4,$idCone);
+                                $fila4=mysql_fetch_array($registro4);
+                                $nmbre=$fila4['nombre'];
 
+                                echo"<td>".$leg;
+                                echo"<td>".$us;
+                                echo"<td>".$clav;
+                                echo"<td>".$nmbre;
+                                echo"<td><a
+                                    class='btn btn-primary ml-2'
+                                    href='ActUs2.php?legajo2=$leg'
+                                    >
+                                    Modificar
+                                    </a>";
+                                echo"</tr>";
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <div>
 
 
 </body>

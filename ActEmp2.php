@@ -90,7 +90,7 @@ $e=$fila2['email'];
             <div class="col-xl-8 offset-md-0">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Registro de Empleado</h2>
+                        <h2 class="card-title">Actualización de Empleado</h2>
                         <form action="ActEmp3.php?legajo2=<?php echo"$l2"?>" method="post" onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}">
                         <table class="table table-user-information ">
                             <tbody>

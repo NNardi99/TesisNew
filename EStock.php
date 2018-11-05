@@ -3,12 +3,16 @@ session_start();
 $l=$_SESSION['LEGAJO'];
 require("Conexion.php");
 $idCone=Conectar();
+
 $sql="select * from empleados where legajo='$l'";
-$sql2="select * from empleados";
 $registro=mysql_query($sql,$idCone);
+$fila=mysql_fetch_array($registro);
+
+$n=$fila['nombre'];
+
+$sql2="select * from proveedores";
 $registro2=mysql_query($sql2,$idCone);
 $registrocount=mysql_query($sql2,$idCone);
-$fila=mysql_fetch_array($registro);
 
 $count=1;
 
@@ -17,11 +21,8 @@ while ($filacount=mysql_fetch_array($registrocount))
     $count = $count + 1;
 }
 
-
-$n=$fila['nombre'];
-
-
 ?>
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -55,24 +56,25 @@ $n=$fila['nombre'];
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-xl-3"></div>
             <div class="col-xl-6">
                 <div class="container">
                     <ul class="dashboard-tabs">
-                        <li>
-                            <a href="Admin.php" class="btn ">
-                                Perfil
-                            </a>
-                        </li>
                         <li class="active">
-                            <a href="Empleados.php" class="btn">
-                                Empleados
+                            <a href="EStock.php" class="btn ">
+                                Proveedores
                             </a>
                         </li>
                         <li>
-                            <a href="Usuarios.php" class="btn">
-                                Usuarios
+                            <a href="Stock.php" class="btn">
+                                Stock
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Compra.php" class="btn">
+                                Compras
                             </a>
                         </li>
                         <li>
@@ -85,53 +87,62 @@ $n=$fila['nombre'];
             </div>
             <div class="col-xl-3"></div>
         </div>
+
         <div class="row" style="margin-bottom: 10px">
             <div class="col-xl-2 offset-md-0"></div>
             <div class="col-xl-8 offset-md-0">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Registro de Empleado</h2>
-                        <form action="AltaEmp.php" method="post" onSubmit="if (!confirm('¿Desea dar de alta?')){return false;}">
+                        <h2 class="card-title">Registro de Proveedores</h2>
+                        <form action="AltaPro.php" method="post" onSubmit="if (!confirm('¿Desea dar de alta?')){return false;}">
                             <table class="table table-user-information ">
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <h4>Legajo</h4>
+                                            <h4>Código</h4>
                                             <?php echo"$count" ?>
                                         </td>
                                         <td>
-                                            <h4>Apellido</h4>
-                                            <input type="text" name="apellido" required>
+                                            <h4>Razón Social</h4>
+                                            <input type="text" name="razon" required>
+                                            <span> *</span>
                                         </td>
                                         <td>
-                                            <h4>Nombre</h4>
-                                            <input type="text" name="nombre" required>
+                                            <h4>C.U.I.T.</h4>
+                                            <input type="text" name="cuit" placeholder="30111111117"
+                                                pattern="[0-9]{11}" minlength="11" maxlength="11" required>
+                                            <span> *</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h4>C.U.I.L.</h4>
-                                            <input type="text" placeholder="20111111115" pattern="[0-9]{11}" minlength="11" maxlength="11" name="cuil" required>
+                                            <h4>Tel&eacute;fono</h4>
+                                            <input type="tel" placeholder="12312345678"
+                                                minlength="10" maxlength="10" name="telefono" required>
+                                            <span> *</span>
                                         </td>
                                         <td>
-                                            <h4>Tel&eacute;fono</h4>
-                                            <input type="tel" placeholder="12312345678" minlength="10" maxlength="10" name="telefono" required>
+                                            <h4>Email</h4>
+                                            <input type="text" name="email" placeholder="me@example.com.ar"
+                                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required/>
+                                            <span> *</span>
                                         </td>
                                         <td>
                                             <h4>Domicilio</h4>
                                             <input type="text" name="domicilio" required>
+                                            <span> *</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <h4>Provincia</h4>
                                             <?php
-                                                $sql5="select * from provincias";
-                                                $registro5=mysql_query($sql5,$idCone) or die("Error en el select");
+                                                $sql3="select * from provincias";
+                                                $registro3=mysql_query($sql3,$idCone) or die("Error en el select");
                                                 echo"<select name='s1' id='provincias'>";
-                                                while($fila5=mysql_fetch_array($registro5)){
-                                                    $Cod=$fila5['codigo'];
-                                                    $Npro=$fila5['provincia'];
+                                                while($fila3=mysql_fetch_array($registro3)){
+                                                    $Cod=$fila3['codigo'];
+                                                    $Npro=$fila3['provincia'];
                                                     echo"<option value=$Cod>$Npro</option>";
                                                 }
                                                 echo"</select>";
@@ -140,20 +151,20 @@ $n=$fila['nombre'];
                                         <td>
                                             <h4>Localidad</h4>
                                             <?php
-                                                $sql6="select * from localidad where codprov='1'";
-                                                $registro6=mysql_query($sql6,$idCone) or die("Error en el select");
+                                                $sql4="select * from localidad where codprov='1'";
+                                                $registro4=mysql_query($sql4,$idCone) or die("Error en el select");
                                                 echo"<select name='s2' id='localidades'>";
-                                                while($fila6=mysql_fetch_array($registro6)){
-                                                    $Cd=$fila6['codlocalidad'];
-                                                    $Nloc=$fila6['localidad'];
+                                                while($fila4=mysql_fetch_array($registro4)){
+                                                    $Cd=$fila4['codlocalidad'];
+                                                    $Nloc=$fila4['localidad'];
                                                     echo"<option value=$Cd>$Nloc</option>";
                                                 }
                                                 echo"</select>";
                                             ?>
                                         </td>
                                         <td>
-                                            <h4>Email</h4>
-                                            <input type="text" name="email" placeholder="me@example.com.ar" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required/>
+                                            <h4>Contacto</h4>
+                                            <input type="text" name="contacto"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -163,22 +174,23 @@ $n=$fila['nombre'];
                     </div>
                 </div>
             </div>
+            <div class="col-xl-2 offset-md-0"></div>
         </div>
+
         <div class="row">
             <div class="col-xl-12">
                 <table class="table table-bordered table-hover">
                     <thead class="thead-dark">
                         <tr>
-                        <th scope="col">Legajo</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">C.U.I.L.</th>
-                        <th scope="col">Tel&eacute;fono</th>
+                        <th scope="col">Código</th>
+                        <th scope="col">Razón Social</th>
+                        <th scope="col">C.U.I.T.</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Domicilio</th>
                         <th scope="col">Provincia</th>
                         <th scope="col">Localidad</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Estado</th>
+                        <th scope="col">Contacto</th>
                         <th scope="col">Modificar</th>
                         <th scope="col">Baja</th>
                         </tr>
@@ -188,54 +200,47 @@ $n=$fila['nombre'];
                             while ($fila2=mysql_fetch_array($registro2))
                             {
                                 echo"<tr class='table-secondary'>";
-                                $l2=$fila2['legajo'];
-                                $a=$fila2['apellido'];
-                                $n=$fila2['nombre'];
-                                $c=$fila2['cuil'];
+                                $cod2=$fila2['codigo'];
+                                $r=$fila2['razon'];
+                                $c=$fila2['cuit'];
                                 $t=$fila2['telefono'];
-                                $d=$fila2['domicilio'];
+                                $e=$fila2['email'];
+                                $dom=$fila2['domicilio'];
                                 $p=$fila2['codprov'];
                                 $loc=$fila2['codloc'];
-                                $es=$fila2['estado'];
-                                $em=$fila2['email'];
-                                
-                                $sql3="select * from provincias where codigo='$p'";
-                                $registro3=mysql_query($sql3,$idCone);
-                                $fila3=mysql_fetch_array($registro3);
-                                $pr=$fila3['provincia'];
+                                $cont=$fila2['contacto'];
+                                $est=$fila2['estado'];
 
-                                $sql4="select * from localidad where codlocalidad='$loc'";
-                                $registro4=mysql_query($sql4,$idCone);
-                                $fila4=mysql_fetch_array($registro4);
-                                $loc2=$fila4['localidad'];
+                                $sql5="select * from provincias where codigo='$p'";
+                                $registro5=mysql_query($sql5,$idCone);
+                                $fila5=mysql_fetch_array($registro5);
+                                $pr=$fila5['provincia'];
 
-                                echo"<td>".$l2;
-                                echo"<td>".$a;
-                                echo"<td>".$n;
-                                echo"</div>";//why
-                                echo"<td>".$c;
-                                echo"<td>".$t;
-                                echo"<td>".$d;
-                                echo"</div>";//why
-                                echo"<td>".$pr;
-                                echo"<td>".$loc2;
-                                echo"<td>".$em;
-                                echo"<td>".$es;
-                                echo"<td><a
-                                    class='btn btn-primary ml-2'
-                                    href='ActEmp2.php?legajo2=$l2'
-                                    >
-                                    Modificar
+                                $sql6="select * from localidad where codlocalidad='$loc'";
+                                $registro6=mysql_query($sql6,$idCone);
+                                $fila6=mysql_fetch_array($registro6);
+                                $loc2=$fila6['localidad'];
+
+                                if ($est=='activo')
+                                {
+                                    echo"<td>".$cod2;
+                                    echo"<td>".$r;
+                                    echo"<td>".$c;
+                                    echo"<td>".$t;
+                                    echo"<td>".$e;
+                                    echo"<td>".$dom;
+                                    echo"<td>".$pr;
+                                    echo"<td>".$loc2;
+                                    echo"<td>".$cont;
+                                    echo"<td><a
+                                        class='btn btn-primary ml-2'
+                                        href='ActPro2.php?codigo=$cod2'
+                                        >
+                                        Modificar
                                     </a>";
-                                echo"<td><a href=javascript:borrar('$l2')>";
-                                    if ($es=='activo'){
-                                        echo"<img class='img-fluid' style='width: 50px;' src='./img/activo.png'></a>";
-                                    }
-                                    else {
-                                        echo"<img class='img-fluid' style='width: 50px;' src='./img/inactivo.png'></a>";
-                                    }
-
-                                echo"</tr>";
+                                    echo"<td><a href=javascript:borrar('$cod2') class='btn btn-primary ml-2'>Baja</a>";
+                                    echo"</tr>";
+                                }
                             }
                         ?>
                     </tbody>
@@ -243,28 +248,28 @@ $n=$fila['nombre'];
             </div>
         </div>
     </div>
-</div>
 
-    
+
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script languaje="javascript">
-function borrar(dato){
-direccion="BajaEmpleado.php?legajo="+dato;
+<script>
+    function borrar(dato){
+    direccion="BajaPro.php?codigo="+dato;
 
-if(confirm("Confirma el cambio de estado de "+dato)){
-location=direccion;
-}
-else alert("Baja Cancelada");
+    if(confirm("Confirma la baja")){
+    location=direccion;
+    }
+    else alert("Baja Cancelada");
 }
 
-$('#provincias').change(function(){
+    $('#provincias').change(function(){
         valor=$(this).val();
         $.post("localidad.php",{id:valor},function(data){
             $("#localidades").html(data);
         });
     });
+
 </script>
 
 </body>

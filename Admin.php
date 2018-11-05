@@ -63,44 +63,45 @@ $cargo=$fila3['nombre'];
         </div>
         <div class="row">
             <div class="col-xl-3"></div>
-                <div class="col-xl-6">
-                    <div class="container">
-                        <ul class="dashboard-tabs">
-                            <li class="active">
-                                <a href="Admin.php" class="btn ">
-                                    Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <a href="Empleados.php" class="btn">
-                                    Empleados
-                                </a>
-                            </li>
-                            <li>
-                                <a href="Usuarios.php" class="btn">
-                                    Usuarios
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="btn">
-                                    Reportes
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+            <div class="col-xl-6">
+                <div class="container">
+                    <ul class="dashboard-tabs">
+                        <li class="active">
+                            <a href="Admin.php" class="btn ">
+                                Perfil
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Empleados.php" class="btn">
+                                Empleados
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Usuarios.php" class="btn">
+                                Usuarios
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn">
+                                Reportes
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col-xl-3"></div>
             </div>
-            <div class="row">
-                <div class="col-xl-6 offset-md-0">
-                    <div class="card">
-                        <div class="card-body">
-                            <h2 class="card-title"><?php echo$n ?></h2>
-                            <form 
-                                action="ActEmp.php?legajo=<?php echo$l ?>"
-                                method="post"
-                                onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}"
-                                >
+            <div class="col-xl-3"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-6 offset-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title"><?php echo$n ?></h2>
+                        <form 
+                            action="ActEmp.php?legajo=<?php echo$l ?>"
+                            method="post"
+                            onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}"
+                            >
                             <table class="table table-user-information ">
                                 <tbody>
                                     <tr>
@@ -190,17 +191,17 @@ $cargo=$fila3['nombre'];
                             </table>
                             <button 
                                 class="btn btn-primary ml-2" type="submit">Guardar cambios</button>
-                            </form>
-                        </div>
+                        </form>
                     </div>
                 </div>
-                <div class="col-xl-6 offset-md-0">
-                    <div class="card">
-                        <div class="card-body">
-                            <form 
-                                action="ActUs.php?legajo=<?php echo$l ?>"
-                                method="post"
-                                onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}"
+            </div>
+            <div class="col-xl-6 offset-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <form 
+                            action="ActUs.php?legajo=<?php echo$l ?>"
+                            method="post"
+                            onSubmit="if (!confirm('¿Desea guardar los cambios?')){return false;}"
                             >
                             <h3 class="card-title">Cambia tu clave</h3>
                             <table class="table table-user-information ">
@@ -236,14 +237,12 @@ $cargo=$fila3['nombre'];
                                 </tbody>
                             </table>
                             <button class="btn btn-primary ml-2" type="submit">Guardar cambios</button>
-                            </form>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/popper.min.js"></script>

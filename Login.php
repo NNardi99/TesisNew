@@ -12,12 +12,40 @@ if($fila=mysql_fetch_array($registro)){
     if($t==1)
     {
         $_SESSION['LEGAJO']=$l;
+        $sql2="select * from login where legajo='$l'";
+        $registro2=mysql_query($sql2,$idCone);
+        $fila2=mysql_fetch_array($registro2);
+
+        $datetimeold=$fila2['datetime'];
+        $cant=$fila2['cant'];
+        $datetimenew=date("d/m/Y");
+        if ($datetimeold == "")
+        {
+            $cant=1;
+            $sql3="insert into login (legajo,datetime,cant) values ('$l','$datetimenew','$cant')";
+        }
+        else if($datetimenew > $datetimeold)
+        {
+            $cant=1;
+            $sql3="update login set cant='$cant', datetime='$datetimenew' where legajo='$l'";
+        }
+        else
+        {
+            $cant=$cant++;
+            $sql3="update login set cant='$cant' where legajo='$l'";
+        }
+
         header("location:Admin.php");
     }
     else if ($t==2)
     {
         $_SESSION['LEGAJO']=$l;
         header("location:RVent.php");
+    }
+    else if ($t==3)
+    {
+        $_SESSION['LEGAJO']=$l;
+        header("location:EStock.php");
     }
 }
 else
