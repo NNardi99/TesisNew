@@ -3,7 +3,7 @@
 body#LoginForm {
     height: 100%;
     background-image:url("../img/blur-26347-27038-hd-wallpapers.jpg") /*!important*/;
-    background-position: center;
+    /* background-position: center; */
     background-repeat: no-repeat;
     background-size: cover;
 }
