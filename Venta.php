@@ -110,15 +110,17 @@ $n=$fila['nombre'];
                                         </td>
                                         <td>
                                             <h4>Filtro</h4>
+                                            <div id="filtro">
                                                 <input
                                                     type="text"
                                                     name="filtro"
                                                     required
                                                 />
+                                            </div>
                                         </td>
                                         <td>
                                             <h4> </h4>
-                                                <button class="btn btn-primary ml-2" type="submit">Consulta</button>
+                                            <button class="btn btn-primary ml-2" type="submit">Consulta</button>
                                         </td>
                                     </form>
                                 </tr>
@@ -137,6 +139,13 @@ $n=$fila['nombre'];
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
+
+    $('#tipo').change(function(){
+        valor=$(this).val();
+        $.post("filtro.php?id="+valor,{id:valor},function(data){
+            $("#filtro").html(data);
+        });
+    });
 
 </script>
 

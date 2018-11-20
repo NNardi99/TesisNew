@@ -11,7 +11,16 @@ $fila=mysql_fetch_array($registro);
 $n=$fila['nombre'];
 
 $tipo=$_REQUEST['s1'];
-$filtro=$_REQUEST['filtro'];
+
+if ($tipo==1)
+{
+    $filtro=$_REQUEST['filtro'];
+}
+else
+{
+    $filtro=$_REQUEST['s2'];
+}
+
 
 ?>
 
@@ -89,9 +98,10 @@ $filtro=$_REQUEST['filtro'];
                         <?php
                             if ($tipo=1)
                             {
-                                $sql2="select * from venta where codigo='$filtro'"; //ver el if
+                                $sql2="select * from venta where codigo='$filtro'";
                                 $registro2=mysql_query($sql2,$idCone);
-                                if($registro2=mysql_query($sql2,$idCone)==0)
+                                $consulta=mysql_num_rows($registro2);
+                                if($consulta>0)
                                 {
                                     echo"<table class='table table-bordered table-hover'>";
                                         echo"<thead class='thead-dark'>";
@@ -106,23 +116,109 @@ $filtro=$_REQUEST['filtro'];
                                             echo"</tr>";
                                         echo"<thead>";
                                         echo"<tbody>";
-                                            while($fila2=mysql_fetch_array($registro2))
-                                            {
-                                                $detalle=$fila2['codetvta'];
+                                        while($fila2=mysql_fetch_array($registro2))
+                                        {
+                                            echo"<tr>";
+                                                echo"<td>".$filtro;
+                                                $legajo=$fila2['legajo'];
+                                                $detalle=$fila2['coddetvta'];
+                                                
+                                                $sql3="select * from detalleventa where codigo='$detalle'";
+                                                $registro3=mysql_query($sql3,$idCone);
+                                                $fila3=mysql_fetch_array($registro3);
 
-                                            }
+                                                $nomprod=$fila3['nombreprod'];
+                                                $cant=$fila3['cantidad'];
+
+                                                $codcliente=$fila2['codcliente'];
+
+                                                $sql4="select * from clientes where codigo='$codcliente'";
+                                                $registro4=mysql_query($sql4,$idCone);
+                                                $fila4=mysql_fetch_array($registro4);
+
+                                                $razon=$fila4['razon'];
+
+                                                $fecha=$fila2['fecha'];
+                                                $estado=$fila2['estado'];
+
+                                                echo"<td>".$nomprod;
+                                                echo"<td>".$cant;
+                                                echo"<td>".$legajo;
+                                                echo"<td>".$razon;
+                                                echo"<td>".$fecha;
+                                                echo"<td>".$estado;
+                                            echo"</tr>";
+                                        }
                                         echo"<tbody>";
-                                            
+                                    echo"</table>";
                                 }
                                 else
                                 {
-                                    echo"<h3>La consulta realizada no arrojó ningún resultado</h3>";
+                                    echo"<h4>La consulta realizada no arrojó ningún resultado</h4>";
                                 }
                                 
                             }
                             else
                             {
+                                $sql2="select * from venta where codcliente='$filtro'";
+                                $registro2=mysql_query($sql2,$idCone);
+                                $consulta=mysql_num_rows($registro2);
+                                if($consulta>0)
+                                {
+                                    echo"<table class='table table-bordered table-hover'>";
+                                        echo"<thead class='thead-dark'>";
+                                            echo"<tr>";
+                                                echo"<th scope='col'>Código</th>";
+                                                echo"<th scope='col'>Producto</th>";
+                                                echo"<th scope='col'>Cantidad</th>";
+                                                echo"<th scope='col'>Legajo Vendedor</th>";
+                                                echo"<th scope='col'>Cliente</th>";
+                                                echo"<th scope='col'>Fecha</th>";
+                                                echo"<th scope='col'>Estado</th>";
+                                            echo"</tr>";
+                                        echo"<thead>";
+                                        echo"<tbody>";
+                                        while($fila2=mysql_fetch_array($registro2))
+                                        {
+                                            echo"<tr>";
+                                                $code=$fila2['codigo'];
+                                                echo"<td>".$code;
 
+                                                $legajo=$fila2['legajo'];
+                                                $detalle=$fila2['coddetvta'];
+                                                
+
+                                                $sql3="select * from detalleventa where codigo='$detalle'";
+                                                $registro3=mysql_query($sql3,$idCone);
+                                                $fila3=mysql_fetch_array($registro3);
+
+                                                $nomprod=$fila3['nombreprod'];
+                                                $cant=$fila3['cantidad'];
+
+                                                $sql4="select * from clientes where codigo='$filtro'";
+                                                $registro4=mysql_query($sql4,$idCone);
+                                                $fila4=mysql_fetch_array($registro4);
+
+                                                $razon=$fila4['razon'];
+
+                                                $fecha=$fila2['fecha'];
+                                                $estado=$fila2['estado'];
+
+                                                echo"<td>".$nomprod;
+                                                echo"<td>".$cant;
+                                                echo"<td>".$legajo;
+                                                echo"<td>".$razon;
+                                                echo"<td>".$fecha;
+                                                echo"<td>".$estado;
+                                            echo"</tr>";
+                                        }
+                                        echo"<tbody>";
+                                    echo"</table>";
+                                }
+                                else
+                                {
+                                    echo"<h4>La consulta realizada no arrojó ningún resultado</h4>";
+                                }
                             }
                         ?>
                         <a class="btn btn-primary ml-2" href="Venta.php">Regresar</a>
