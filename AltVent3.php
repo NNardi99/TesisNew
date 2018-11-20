@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $l=$_SESSION['LEGAJO'];
 require("Conexion.php");
 $idCone=Conectar();
@@ -9,18 +10,6 @@ $registro=mysql_query($sql,$idCone);
 $fila=mysql_fetch_array($registro);
 
 $n=$fila['nombre'];
-
-$sql2="select * from venta";
-$registro2=mysql_query($sql2,$idCone);
-$registrocount=mysql_query($sql2,$idCone);
-
-$count=1;
-
-while ($filacount=mysql_fetch_array($registrocount))
-{
-    $count = $count + 1;
-}
-
 ?>
 
 <!doctype html>
@@ -93,60 +82,97 @@ while ($filacount=mysql_fetch_array($registrocount))
             <div class="col-xl-8 offset-md-0">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Alta de Ficha de Venta - Detalle</h2>
-                        <table class="table table-user-information ">
-                            <tbody>
-                                <form action="AltVent4.php" method="post" onSubmit="if (!confirm('¿Desea continuar?')){return false;}">
-                                    <tr>
-                                        <td>
-                                            <h4>Código</h4>
-                                            <?php echo"$count" ?>
-                                        </td>
-                                        <td>
-                                            <h4>Detalle</h4>
-                                            <!-- Se elige el producto que se registro en el detalle -->
-                                            <?php
-                                                $sql3="select * from producto";
-                                                $registro3=mysql_query($sql3,$idCone) or die("Error en el select");
-                                                echo"<select name='s1'>";
-                                                while($fila3=mysql_fetch_array($registro3)){
-                                                    $Cd=$fila3['codigo'];
-                                                    $Nprod=$fila3['nombre'];
-                                                    echo"<option value=$Cd>$Nprod</option>";
-                                                }
-                                                echo"</select>";
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <h4>Cantidad</h4>
-                                            <!-- Mostrar los detalles con el producto que se eligió en el combobox anterior -->
-                                            <input type="number" name="cantidad" min="1" required>
-                                            <span> *</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <button class="btn btn-primary ml-2" type="submit">Agregar Detalle</button>
-                                        </td>
-                                </form>
-                                <form action="AltVent3.php" method="post" onSubmit="if (!confirm('¿Desea continuar?')){return false;}">
-                                        <td>
-                                            <button class="btn btn-primary ml-2" type="submit">Continuar</button>
-                                        </td>
-                                    </tr>
-                                </form>
-                            </tbody>
-                        </table>
-                            
-                        
+                        <h2 class="card-title">Alta de Ficha de Venta</h2>
+                        <?php
+                            if(isset($_GET['id']))
+                            {
+                                $id = $_GET['id'];
+                                $codprod=$_SESSION['prodcart'][$id];
+                                $cantidad=$_SESSION['qtycart'][$id];
+
+                                $sqlsel="select * from producto where codigo='$codprod'";
+                                $registrosel=mysql_query($sqlsel,$idCone) or die(mysql_error());
+                                
+                                $filasel=mysql_fetch_array($registrosel);
+                                
+                                $sa=$filasel['stockactual'];
+
+                                $dif=$sa+$cantidad;
+
+                                $sqlsuma="update producto set stockactual='$dif' where codigo='$codprod'";
+                                $registrosuma=mysql_query($sqlsuma,$idCone) or die(mysql_error());
+                                
+                                unset($_SESSION['prodcart'][$id]);
+                                unset($_SESSION['qtycart'][$id]);
+                            }
+
+                            if(isset($_SESSION['prodcart']) && !empty($_SESSION['prodcart']))
+                            {
+                                echo "<table class='table table-bordered table-hover'>";
+                                    echo "<thead class='thead-dark'>";
+                                        echo "<tr>";
+                                            echo"<th scope='col'>Nro</th>";
+                                            echo"<th scope='col'>Producto</th>";
+                                            echo"<th scope='col'>Cantidad</th>";
+                                            echo"<th scope='col'>Eliminar</th>";
+                                        echo "<tr>";
+                                    echo"</thead>";
+                                    echo"<tbody>";
+                                        $i = 0;
+                                        foreach ($_SESSION['prodcart'] as $key => $value) {
+                                            $i++;
+                                            $sql2="select * from producto where codigo='$value'";
+                                            $registro2=mysql_query($sql2,$idCone);
+                                            $fila2=mysql_fetch_array($registro2);
+
+                                            $qty=$_SESSION['qtycart'][$key];
+                                            
+                                            echo"<tr>";
+                                                echo"<td>$i</td>";
+                                                echo"<td>{$fila2['nombre']}</td>";
+                                                echo"<td>$qty</td>";
+                                                echo"<td><a class='btn btn-primary ml-2' href='?id=$key'>Eliminar Producto</a></td>";
+                                            echo"</tr>";
+                                        }
+                                    echo"</tbody>";
+                                echo "</table>";
+                                echo"<a class='btn btn-primary ml-2' href='AltVent.php'>Agregar Productos</a>";
+                            }
+                            else
+                            {
+                                echo"<h3>No hay productos agregados</h3>";
+                                echo"<a class='btn btn-primary ml-2' href='AltVent.php'>Agregar Productos</a>";
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
             <div class="col-xl-2 offset-md-0"></div>
         </div>
 
-    </div>
+        <div class="row">
+            <div class="col-xl-2 offset-md-0"></div>
+            <div class="col-xl-8 offset-md-0">
+                <form action="AltVent4.php" method="post" onSubmit="if (!confirm('¿Desea continuar?')){return false;}">
+                    <h2>Seleccione el Cliente</h2>
+                    <select name="s1">
+                        <?php
+                            $sql3="select * from clientes";
+                            $registro3=mysql_query($sql3,$idCone);
 
+                            while($fila3=mysql_fetch_array($registro3)){
+                                $Ccli=$fila3['codigo'];
+                                $N=$fila3['razon'];
+                                echo"<option value=$Ccli>$N</option>";
+                            }
+                        ?>
+                    </select><span> *</span>
+                    <button class='btn btn-primary ml-2'>Crear Ficha de Venta</button>
+                </form>
+            </div>
+            <div class="col-xl-2 offset-md-0"></div>
+        </div>
+    </div>
 
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/popper.min.js"></script>

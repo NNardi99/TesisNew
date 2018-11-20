@@ -1,5 +1,15 @@
 <?php
+
+// $_SESSION['count'] = 0;
+
+// session_reset($_SESSION['prodcart']);
+// session_reset($_SESSION['qtycart']);
+// session_reset($_SESSION['count']);
+
 session_start();
+$_SESSION = array();
+
+
 require("Conexion.php");
 $idCone=Conectar();
 $n=$_REQUEST['inputUser'];

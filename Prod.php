@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $l=$_SESSION['LEGAJO'];
 require("Conexion.php");
 $idCone=Conectar();
@@ -9,6 +10,21 @@ $registro=mysql_query($sql,$idCone);
 $fila=mysql_fetch_array($registro);
 
 $n=$fila['nombre'];
+
+$cod=$_REQUEST['codigo'];
+$sql2="select * from producto where codigo='$cod'";
+$registro2=mysql_query($sql2,$idCone);
+$fila2=mysql_fetch_array($registro2);
+
+$np=$fila2['nombre'];
+$t=$fila2['tipo'];
+$cat=$fila2['cateprod'];
+$sa=$fila2['stockactual'];
+
+$sql3="select * from categoria where codigo='$cat'";
+$registro3=mysql_query($sql3,$idCone);
+$fila3=mysql_fetch_array($registro3);
+$prod=$fila3['nombre'];
 
 ?>
 
@@ -82,48 +98,36 @@ $n=$fila['nombre'];
             <div class="col-xl-8 offset-md-0">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Menú de Venta</h2>
-                        <table class="table table-user-information ">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <form action="AltVent.php" method="post">
-                                            <button class="btn btn-primary ml-2" type="submit">Alta</button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="ModVent.php" method="post">
-                                            <button class="btn btn-primary ml-2" type="submit">Modificación</button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <form action="ConsultaVta.php" method="post">
-                                        <td>
-                                            <h4>Consulta</h4>
-                                            <select name='s1' id='tipo'>
-                                                <option value="1">Codigo de Venta</option>
-                                                <option value="2">Cliente</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <h4>Filtro</h4>
-                                                <input
-                                                    type="text"
-                                                    name="filtro"
-                                                    required
-                                                />
-                                        </td>
-                                        <td>
-                                            <h4> </h4>
-                                                <button class="btn btn-primary ml-2" type="submit">Consulta</button>
-                                        </td>
-                                    </form>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <h2 class="card-title">Detalle del Producto</h2>
+                        <form 
+                            action="AltVent2.php"
+                            method="post"
+                            onSubmit="if (!confirm('¿Desea agregar?')){return false;}"
+                        >
+                            <table class="table table-user-information ">
+                                <tbody>
+                                    <tr>
+                                        <td><h5>Código: </h5></td>
+                                        <td><input 
+                                            type='hidden' name='codigo' class='form-control' value='<?php echo $cod; ?>' style='width: 50px'>
+                                            <?php echo $cod; ?></td>
+                                        <td><h5>Nombre: </h5></td>
+                                        <td><?php echo $np; ?></td>
+                                        <td><h5>Tipo: </h5></td>
+                                        <td><?php echo $t; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h5>Categoría: </h5></td>
+                                        <td><?php echo $prod; ?></td>
+                                        <td><h5>Stock Actual: </h5></td>
+                                        <td><?php echo $sa; ?></td>
+                                        <td><h5>Cantidad: </h5></td>
+                                        <td><input type="number" name="cantidad" min="1" max="<?php echo $sa; ?>" required></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-primary ml-2" type="submit">Agregar</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -131,7 +135,6 @@ $n=$fila['nombre'];
         </div>
 
     </div>
-
 
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/popper.min.js"></script>

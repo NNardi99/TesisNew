@@ -10,6 +10,9 @@ $fila=mysql_fetch_array($registro);
 
 $n=$fila['nombre'];
 
+$tipo=$_REQUEST['s1'];
+$filtro=$_REQUEST['filtro'];
+
 ?>
 
 <!doctype html>
@@ -82,54 +85,53 @@ $n=$fila['nombre'];
             <div class="col-xl-8 offset-md-0">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Menú de Venta</h2>
-                        <table class="table table-user-information ">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <form action="AltVent.php" method="post">
-                                            <button class="btn btn-primary ml-2" type="submit">Alta</button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="ModVent.php" method="post">
-                                            <button class="btn btn-primary ml-2" type="submit">Modificación</button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <form action="ConsultaVta.php" method="post">
-                                        <td>
-                                            <h4>Consulta</h4>
-                                            <select name='s1' id='tipo'>
-                                                <option value="1">Codigo de Venta</option>
-                                                <option value="2">Cliente</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <h4>Filtro</h4>
-                                                <input
-                                                    type="text"
-                                                    name="filtro"
-                                                    required
-                                                />
-                                        </td>
-                                        <td>
-                                            <h4> </h4>
-                                                <button class="btn btn-primary ml-2" type="submit">Consulta</button>
-                                        </td>
-                                    </form>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <h2 class="card-title">Consulta</h2>
+                        <?php
+                            if ($tipo=1)
+                            {
+                                $sql2="select * from venta where codigo='$filtro'"; //ver el if
+                                $registro2=mysql_query($sql2,$idCone);
+                                if($registro2=mysql_query($sql2,$idCone)==0)
+                                {
+                                    echo"<table class='table table-bordered table-hover'>";
+                                        echo"<thead class='thead-dark'>";
+                                            echo"<tr>";
+                                                echo"<th scope='col'>Código</th>";
+                                                echo"<th scope='col'>Producto</th>";
+                                                echo"<th scope='col'>Cantidad</th>";
+                                                echo"<th scope='col'>Legajo Vendedor</th>";
+                                                echo"<th scope='col'>Cliente</th>";
+                                                echo"<th scope='col'>Fecha</th>";
+                                                echo"<th scope='col'>Estado</th>";
+                                            echo"</tr>";
+                                        echo"<thead>";
+                                        echo"<tbody>";
+                                            while($fila2=mysql_fetch_array($registro2))
+                                            {
+                                                $detalle=$fila2['codetvta'];
+
+                                            }
+                                        echo"<tbody>";
+                                            
+                                }
+                                else
+                                {
+                                    echo"<h3>La consulta realizada no arrojó ningún resultado</h3>";
+                                }
+                                
+                            }
+                            else
+                            {
+
+                            }
+                        ?>
+                        <a class="btn btn-primary ml-2" href="Venta.php">Regresar</a>
                     </div>
                 </div>
             </div>
             <div class="col-xl-2 offset-md-0"></div>
         </div>
-
+    
     </div>
 
 

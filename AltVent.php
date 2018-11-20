@@ -10,16 +10,28 @@ $fila=mysql_fetch_array($registro);
 
 $n=$fila['nombre'];
 
-$sql2="select * from detalleventa";
-$registro2=mysql_query($sql2,$idCone);
-$registrocount=mysql_query($sql2,$idCone);
+//Elige la última fila de la tabla venta
+$sql2="select * from venta ORDER BY codigo DESC limit 1";
+$registro2=mysql_query($sql2,$idCone) or die(mysql_error());;
 
-$count=1;
+$fila2=mysql_fetch_array($registro2);
 
-while ($filacount=mysql_fetch_array($registrocount))
-{
-    $count = $count + 1;
-}
+$ultcodvent=$fila2['codigo'];
+
+//Elige la penúltima fila de la tabla venta
+$sql6="select * from venta ORDER BY codigo DESC limit 1,1";
+$registro6=mysql_query($sql6,$idCone) or die(mysql_error());;
+
+$fila6=mysql_fetch_array($registro6);
+
+$pultcodvent=$fila6['codigo'];
+
+
+//Cuenta las filas 'codigo' de la tabla venta
+$sql5="select count(codigo) as numrow from venta";
+$registro5=mysql_query($sql5,$idCone) or die(mysql_error());;
+$fila5=mysql_fetch_array($registro5);
+$cantidadfila=$fila5['numrow'];
 
 ?>
 
@@ -45,7 +57,7 @@ while ($filacount=mysql_fetch_array($registrocount))
                         <div class="container d-none d-lg-block">
                             <ul class="nav navbar-nav mt-2 navbar-left">
                                 <li class="nav-item active">
-                                    <p>Bienvenido <?php echo $n ?></p>
+                                    <p>Bienvenido <?php echo $n; ?></p>
                                 </li>
                             </ul>
                         </div>
@@ -93,50 +105,57 @@ while ($filacount=mysql_fetch_array($registrocount))
             <div class="col-xl-8 offset-md-0">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Alta de Ficha de Venta - Detalle</h2>
+                        <h2 class="card-title">Alta de Ficha de Venta</h2>
                         <table class="table table-user-information ">
                             <tbody>
-                                <form action="AltVent2.php" method="post" onSubmit="if (!confirm('¿Desea continuar?')){return false;}">
-                                    <tr>
-                                        <td>
-                                            <h4>Código</h4>
-                                            <?php echo"$count" ?>
-                                        </td>
-                                        <td>
-                                            <h4>Producto</h4>
+                                <tr>
+                                    <td>
+                                        <h4>Categoría de Productos</h4>
                                             <?php
-                                                $sql3="select * from producto where stockactual>'0'";
+                                                $sql3="select * from categoria";
                                                 $registro3=mysql_query($sql3,$idCone) or die("Error en el select");
-                                                echo"<select name='s1'>";
+                                                echo"<select name='s1' id='categoria'>";
                                                 while($fila3=mysql_fetch_array($registro3)){
                                                     $Cd=$fila3['codigo'];
-                                                    $Nprod=$fila3['nombre'];
-                                                    echo"<option value=$Cd>$Nprod</option>";
+                                                    $Ncat=$fila3['nombre'];
+                                                    echo"<option value=$Cd>$Ncat</option>";
                                                 }
                                                 echo"</select>";
                                             ?>
-                                        </td>
-                                        <td>
-                                            <h4>Cantidad</h4>
-                                            <input type="number" name="cantidad" min="1" required>
-                                            <span> *</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <button class="btn btn-primary ml-2" type="submit">Agregar Detalle</button>
-                                        </td>
-                                </form>
-                                <form action="AltVent3.php" method="post" onSubmit="if (!confirm('¿Desea continuar?')){return false;}">
-                                        <td>
-                                            <button class="btn btn-primary ml-2" type="submit">Continuar</button>
-                                        </td>
-                                    </tr>
-                                </form>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Código</th>
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">Tipo</th>
+                                                <th scope="col">Stock</th>
+                                                <th scope="col">Añadir</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="producto">
+                                            <?php
+                                                $sql4="select * from producto where cateprod='1'";
+                                                $registro4=mysql_query($sql4,$idCone);
+                                                while($fila4=mysql_fetch_array($registro4)){
+                                                    echo "<tr class='table-secondary'>";
+                                                    // echo"<td>".$fila4["codigo"];
+                                                    echo"<td>".$fila4["codigo"];
+                                                    echo"<td>".$fila4["nombre"];
+                                                    echo"<td>".$fila4["tipo"];
+                                                    echo"<td>".$fila4["stockactual"];
+                                                    echo"<td>";
+                                                    echo"<a class='btn btn-primary ml-2' href='Prod.php?codigo={$fila4["codigo"]}'>Añadir</a>";
+                                                    echo"</tr>";
+                                                }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </tr>
                             </tbody>
                         </table>
-                            
-                        
                     </div>
                 </div>
             </div>
@@ -150,7 +169,12 @@ while ($filacount=mysql_fetch_array($registrocount))
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
-
+    $('#categoria').change(function(){
+        valor=$(this).val();
+        $.post("producto.php",{id:valor},function(data){
+            $("#producto").html(data);
+        });
+    });
 </script>
 
 </body>

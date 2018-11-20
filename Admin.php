@@ -105,7 +105,7 @@ $cargo=$fila3['nombre'];
                             <table class="table table-user-information ">
                                 <tbody>
                                     <tr>
-                                        <td> Apellido:</td>
+                                        <td>Apellido:</td>
                                         <td><?php echo$a ?></td>
                                     </tr>
                                     <tr>
