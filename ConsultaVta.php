@@ -12,14 +12,7 @@ $n=$fila['nombre'];
 
 $tipo=$_REQUEST['s1'];
 
-if ($tipo==1)
-{
-    $filtro=$_REQUEST['filtro'];
-}
-else
-{
-    $filtro=$_REQUEST['s2'];
-}
+$filtro=$_REQUEST['filtro'];
 
 
 ?>

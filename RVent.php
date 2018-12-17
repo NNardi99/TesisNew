@@ -78,7 +78,7 @@ while ($filacount=mysql_fetch_array($registrocount))
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="btn">
+                            <a href="RepoVent.php" class="btn">
                                 Reportes
                             </a>
                         </li>
@@ -89,8 +89,8 @@ while ($filacount=mysql_fetch_array($registrocount))
         </div>
 
         <div class="row" style="margin-bottom: 10px">
-            <div class="col-xl-2 offset-md-0"></div>
-            <div class="col-xl-8 offset-md-0">
+            <!-- <div class="col-xl-2 offset-md-0"></div> -->
+            <div class="col-xl-12 offset-md-0">
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Registro de Cliente</h2>
@@ -171,82 +171,85 @@ while ($filacount=mysql_fetch_array($registrocount))
                             </table>
                             <button class="btn btn-primary ml-2" type="submit">Dar de Alta</button>
                         </form>
+                        <hr>
+                        <h2 class="card-title">Listado de Cliente</h2>
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                <th scope="col">Código</th>
+                                <th scope="col">Razón Social</th>
+                                <th scope="col">C.U.I.T.</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Domicilio</th>
+                                <th scope="col">Provincia</th>
+                                <th scope="col">Localidad</th>
+                                <th scope="col">Contacto</th>
+                                <th scope="col">Modificar</th>
+                                <th scope="col">Baja</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    while ($fila2=mysql_fetch_array($registro2))
+                                    {
+                                        echo"<tr class='table-secondary'>";
+                                        $cod2=$fila2['codigo'];
+                                        $r=$fila2['razon'];
+                                        $c=$fila2['cuit'];
+                                        $t=$fila2['telefono'];
+                                        $e=$fila2['email'];
+                                        $dom=$fila2['domicilio'];
+                                        $p=$fila2['codprov'];
+                                        $loc=$fila2['codloc'];
+                                        $cont=$fila2['contacto'];
+                                        $est=$fila2['estado'];
+
+                                        $sql5="select * from provincias where codigo='$p'";
+                                        $registro5=mysql_query($sql5,$idCone);
+                                        $fila5=mysql_fetch_array($registro5);
+                                        $pr=$fila5['provincia'];
+
+                                        $sql6="select * from localidad where codlocalidad='$loc'";
+                                        $registro6=mysql_query($sql6,$idCone);
+                                        $fila6=mysql_fetch_array($registro6);
+                                        $loc2=$fila6['localidad'];
+
+                                        if ($est=='activo')
+                                        {
+                                            echo"<td>".$cod2;
+                                            echo"<td>".$r;
+                                            echo"<td>".$c;
+                                            echo"<td>".$t;
+                                            echo"<td>".$e;
+                                            echo"<td>".$dom;
+                                            echo"<td>".$pr;
+                                            echo"<td>".$loc2;
+                                            echo"<td>".$cont;
+                                            echo"<td><a
+                                                class='btn btn-primary ml-2'
+                                                href='ActCli2.php?codigo=$cod2'
+                                                >
+                                                Modificar
+                                            </a>";
+                                            echo"<td><a href=javascript:borrar('$cod2') class='btn btn-primary ml-2'>Baja</a>";
+                                            echo"</tr>";
+                                        }
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 offset-md-0"></div>
+            <!-- <div class="col-xl-2 offset-md-0"></div> -->
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-xl-12">
-                <table class="table table-bordered table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                        <th scope="col">Código</th>
-                        <th scope="col">Razón Social</th>
-                        <th scope="col">C.U.I.T.</th>
-                        <th scope="col">Teléfono</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Domicilio</th>
-                        <th scope="col">Provincia</th>
-                        <th scope="col">Localidad</th>
-                        <th scope="col">Contacto</th>
-                        <th scope="col">Modificar</th>
-                        <th scope="col">Baja</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            while ($fila2=mysql_fetch_array($registro2))
-                            {
-                                echo"<tr class='table-secondary'>";
-                                $cod2=$fila2['codigo'];
-                                $r=$fila2['razon'];
-                                $c=$fila2['cuit'];
-                                $t=$fila2['telefono'];
-                                $e=$fila2['email'];
-                                $dom=$fila2['domicilio'];
-                                $p=$fila2['codprov'];
-                                $loc=$fila2['codloc'];
-                                $cont=$fila2['contacto'];
-                                $est=$fila2['estado'];
-
-                                $sql5="select * from provincias where codigo='$p'";
-                                $registro5=mysql_query($sql5,$idCone);
-                                $fila5=mysql_fetch_array($registro5);
-                                $pr=$fila5['provincia'];
-
-                                $sql6="select * from localidad where codlocalidad='$loc'";
-                                $registro6=mysql_query($sql6,$idCone);
-                                $fila6=mysql_fetch_array($registro6);
-                                $loc2=$fila6['localidad'];
-
-                                if ($est=='activo')
-                                {
-                                    echo"<td>".$cod2;
-                                    echo"<td>".$r;
-                                    echo"<td>".$c;
-                                    echo"<td>".$t;
-                                    echo"<td>".$e;
-                                    echo"<td>".$dom;
-                                    echo"<td>".$pr;
-                                    echo"<td>".$loc2;
-                                    echo"<td>".$cont;
-                                    echo"<td><a
-                                        class='btn btn-primary ml-2'
-                                        href='ActCli2.php?codigo=$cod2'
-                                        >
-                                        Modificar
-                                    </a>";
-                                    echo"<td><a href=javascript:borrar('$cod2') class='btn btn-primary ml-2'>Baja</a>";
-                                    echo"</tr>";
-                                }
-                            }
-                        ?>
-                    </tbody>
-                </table>
+                
             </div>
-        </div>
+        </div> -->
     </div>
 
 <script src="js/jquery-3.3.1.min.js"></script>

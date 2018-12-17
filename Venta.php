@@ -67,7 +67,7 @@ $n=$fila['nombre'];
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="btn">
+                            <a href="RepoVent.php" class="btn">
                                 Reportes
                             </a>
                         </li>
@@ -105,7 +105,7 @@ $n=$fila['nombre'];
                                             <h4>Consulta</h4>
                                             <select name='s1' id='tipo'>
                                                 <option value="1">Codigo de Venta</option>
-                                                <option value="2">Cliente</option>
+                                                <option value="2">Código de Cliente</option>
                                             </select>
                                         </td>
                                         <td>
@@ -139,14 +139,6 @@ $n=$fila['nombre'];
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
-
-    $('#tipo').change(function(){
-        valor=$(this).val();
-        $.post("filtro.php?id="+valor,{id:valor},function(data){
-            $("#filtro").html(data);
-        });
-    });
-
 </script>
 
 </body>
